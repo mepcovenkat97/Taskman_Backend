@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mepcovenkat97/Taskman_Backend#readme",
   "dependencies": {
+    "@hapi/joi": "^16.1.5",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
     "cors": "^2.8.5",
