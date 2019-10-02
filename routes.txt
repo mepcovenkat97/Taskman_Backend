@@ -1,0 +1,100 @@
+Module #1 - users
+{
+   /login
+   POST: login
+   {
+      email
+      password
+   }
+
+   /user/update
+   PUT: updateUser
+   {
+      teamid | taskid | projectid
+   }
+}
+
+Module #2 - project
+{
+   /project
+   POST: createNewProject
+   {
+      workspaceid
+      projectname
+      startdate
+      duedate
+      teamid (optional)
+      taskcount (optional)
+      taskid (optional)
+      status (optional | not completed(default) | late | completed )
+   }
+   /project/:projectid
+   PUT: updateProject
+   {
+      duedate | teamid | taskid | taskcount(autoupdate) | status
+   }
+}
+
+
+Module #3 - workspace
+{
+   /workspace
+   POST: createWorkSpace
+   {
+      name
+      projectid (optional)
+      teamid (optional)
+   }
+   /workspace/:id
+   PUT: updateWorkSpace
+   {
+      projectid | teamid
+   }
+}
+
+Module #4 - task
+{
+   /task
+   POST: createTask
+   {
+      name
+      userid
+      projectid
+      priority
+      messageid (optional)
+      status (optional | not complete(default) | completed)
+   }
+   /task/:id
+   PUT: updateTask
+   {
+      priority | messageid | status
+   }
+}
+
+Module #5 - Team
+{
+   /team
+   POST: createTeam
+   {
+      name
+      membersid (defaultly null)
+      projectlist (defaultly null)
+   }
+   /team/:id
+   PUT: updateTeam
+   {
+      memberid | projectid 
+   }
+}
+
+Module #6 - message
+{
+   /message
+   POST: sendMessage
+   {
+      content
+      userid
+      taskid
+      projectid
+   }
+}

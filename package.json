@@ -1,0 +1,30 @@
+{
+  "name": "taskman_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mepcovenkat97/Taskman_Backend.git"
+  },
+  "author": "D.R.Venkateshwar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mepcovenkat97/Taskman_Backend/issues"
+  },
+  "homepage": "https://github.com/mepcovenkat97/Taskman_Backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.7.3",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.3"
+  }
+}
