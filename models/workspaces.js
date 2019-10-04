@@ -7,7 +7,7 @@ const validateWorkspace = workspace => {
       projectid: Joi.string(),
       teamid: Joi.string()
    })
-   return Joi.validate(workspace, schema)
+   return schema.validate(workspace)
 };
 
 const workspaceSchema = new mongoose.Schema({
@@ -22,9 +22,9 @@ const workspaceSchema = new mongoose.Schema({
    }
 });
 
-const workspace = mongoose.model("workspace", workspaceSchema);
+const Workspace = mongoose.model("workspace", workspaceSchema);
 
 module.exports = {
-   workspace,
+   Workspace,
    validateWorkspace
 };

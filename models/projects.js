@@ -2,14 +2,13 @@ const mongoose = require("mongoose")
 const Joi = require("@hapi/joi")
 
 const validateProject = project => {
-   const schema = Joi.object.keys({
+   const schema = Joi.object().keys({
       title:Joi.string().required(),
       workspaceid:Joi.string(),
       teamid:Joi.string(),
       taskid:Joi.string(),
-      status:Joi.string()
    })
-   return Joi.validate(project, schema);
+   return schema.validate(project);
 }
 
 const projectSchema = new mongoose.Schema({
@@ -18,13 +17,13 @@ const projectSchema = new mongoose.Schema({
    startdate:{type:Date,default:Date.now},
    enddate:{type:Date},
    teamid:{type:mongoose.Schema.Types.ObjectId, ref:"team"},
-   taskid:{type:mongoose.Schema.Types.ObjectId, ref:"task"},
+   taskid:[{type:mongoose.Schema.Types.ObjectId, ref:"task"}],
    status:{type:String,default:"incomplete"}
 })
 
-const project = mongoose.model("project", projectSchema);
+const Project = mongoose.model("project", projectSchema);
 
 module.exports={
    validateProject,
-   project
+   Project
 }

@@ -2,12 +2,12 @@ const mongoose = require("mongoose")
 const Joi = require("@hapi/joi")
 
 const validateTeam = team => {
-   const schema = Joi.object.keys({
+   const schema = Joi.object().keys({
       name:Joi.string().required(),
       memberslist:Joi.string().required(),
       projectslist:Joi.string().required()
    })
-   return Joi.validate(team,schema)
+   return schema.validate(team)
 }
 
 const teamSchema = new mongoose.Schema({
@@ -16,9 +16,9 @@ const teamSchema = new mongoose.Schema({
    projectslist:[{type:mongoose.Schema.Types.ObjectId, ref:"project"}],
 })
 
-const team = mongoose.model("team", teamSchema);
+const Team = mongoose.model("team", teamSchema);
 
 module.exports = {
    validateTeam,
-   user
+   Team
 }
