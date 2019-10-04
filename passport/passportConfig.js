@@ -46,7 +46,6 @@ passport.use(
            // user not found or invalid password
            return done(null, false);
          }
-         if (user.method == "local" )
          done(null, user);
        } catch (err) {
          done(err, false);

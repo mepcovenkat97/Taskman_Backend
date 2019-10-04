@@ -1,6 +1,30 @@
 const { Project } = require("../models/projects")
 const { Workspace } = require("../models/workspaces")
 const { Task } = require("../models/tasks")
+const { Team } = require("../models/teams");
+const { User } = require("../models/user")
+
+exports.updateUser = async(req,res) =>{
+   const id = req.params.id;
+   try{
+      if(!req.body.taskid){
+         const user = await User.findByIdAndUpdate(id,req.body)
+         res.send(user);
+      }
+      else{
+         const user = await User.findByIdAndUpdate(id,{
+            $push:{
+               taskid:req.body.taskid
+            }
+         })
+         res.send(user);
+      }
+   }
+   catch(e){
+      console.log(e);
+      res.status(500).send("Internal Server Error");
+   }
+}
 exports.updateProjectDetails = async (req, res) => {
    const id = req.params.id;
    try{
@@ -62,4 +86,31 @@ exports.updateTask = async(req,res) => {
    }
 }
 
-exports.updateTeam = async (req,res) => {}
+exports.updateTeam = async (req,res) => {
+   const id = req.params.id;
+   try{
+      const details =req.body;
+      console.log(details);
+      if(req.body.userid){
+         const team = await Team.findByIdAndUpdate(id,{
+            $push:{
+               userid : req.body.userid
+            }
+         })
+         res.send(team)
+      }
+      else
+      {
+         const team = await Team.findByIdAndUpdate(id,{
+            $push:{
+               projectid: req.body.projectid
+            }
+         })
+         res.send(team);
+      }
+   }
+   catch(e){
+      console.log(e);
+      res.status(500).semessageidnd("Internal Server Error");
+   }
+}

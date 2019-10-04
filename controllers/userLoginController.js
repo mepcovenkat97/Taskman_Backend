@@ -2,7 +2,7 @@ const { generateToken } = require("../helpers/jwt");
 
 exports.userLogin = async (req, res) => {
    try{
-      const user = req.body;
+      const user = req.user;
       console.log(user);
       const token = generateToken(user);
       console.log(token)

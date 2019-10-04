@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
+const bcrypt = require("bcrypt");
 
 const validateUser = user => {
   console.log(user)
@@ -8,9 +9,9 @@ const validateUser = user => {
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       type:Joi.string().required(),
-      // teamid: Joi.string(),
-      // taskid: Joi.string(),
-      // projectid: Joi.string(),
+      teamid: Joi.string(),
+      taskid: Joi.string(),
+      projectid: Joi.string(),
    });
    return schema.validate(user);
 };
@@ -26,13 +27,10 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.pre("save", async function(next) {
-   if (this.method !== "local") {
-     return next();
-   }
    try {
      const salt = await bcrypt.genSalt(10);
-     const hashedPassword = await bcrypt.hash(this.local.password, salt);
-     this.local.password = hashedPassword;
+     const hashedPassword = await bcrypt.hash(this.password, salt);
+     this.password = hashedPassword;
      next();
    } catch (err) {
      next(err);
@@ -41,7 +39,7 @@ userSchema.pre("save", async function(next) {
  
  userSchema.methods.isValidPassword = async function(newPassword) {
    try {
-     return await bcrypt.compare(newPassword, this.local.password);
+     return await bcrypt.compare(newPassword, this.password);
    } catch (err) {
      throw new Error(err);
    }

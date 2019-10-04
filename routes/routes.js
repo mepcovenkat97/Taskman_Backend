@@ -12,7 +12,7 @@ var fs = require("fs");
 router
    .route("/login")
    .post(
-     // passport.authenticate(passportConfig.METHOD_LOCAL, {session:false}),
+      passport.authenticate(passportConfig.METHOD_LOCAL, {session:false}),
       userLoginController.userLogin
    )
 router
@@ -21,6 +21,11 @@ router
       addUserDataController.addUser
    );
 
+router
+   .route("/user/:id")
+   .put(
+      updateUserDataController.updateUser
+   )
 router
    .route("/project")
    .post(
@@ -60,7 +65,7 @@ router
 router
    .route("/task/:id")
    .put(
-      
+      passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
       updateUserDataController.updateTask
    )
 
@@ -69,6 +74,12 @@ router
    .post(
       passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
       addUserDataController.addTeam
+   )
+router
+   .route("/team/:id")
+   .put(
+      //passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
+      updateUserDataController.updateTeam
    )
 
 router
