@@ -15,8 +15,8 @@ const app = express()
 //middlewares
 app.use(cors());
 app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("public"))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use("/", routes);
 
 

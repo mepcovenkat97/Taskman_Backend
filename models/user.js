@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
    type:{ type:String},
    password:{type:String},
    teamid:{type:mongoose.Schema.Types.ObjectId, ref:"team"},
-   taskid:[{type:mongoose.Schema.Types.ObjectId, ref:"task"}],
+   taskid:{type:mongoose.Schema.Types.ObjectId, ref:"task"},
    projectid:{type:mongoose.Schema.Types.ObjectId, ref:"project"}
 })
 

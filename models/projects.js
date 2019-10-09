@@ -4,6 +4,8 @@ const Joi = require("@hapi/joi")
 const validateProject = project => {
    const schema = Joi.object().keys({
       title:Joi.string().required(),
+      startdate:Joi.string().required(),
+      enddate:Joi.string().required(),
       workspaceid:Joi.string(),
       teamid:Joi.string(),
       taskid:Joi.string(),

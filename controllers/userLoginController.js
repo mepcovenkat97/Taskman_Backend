@@ -14,6 +14,7 @@ exports.userLogin = async (req, res) => {
             name:user.name,
             teamid:user.teamid,
             projectid:user.projectid,
+            taskid:user.taskid,
             type:user.type
          }
       });

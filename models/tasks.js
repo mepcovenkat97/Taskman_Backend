@@ -6,7 +6,7 @@ const validateTask = task => {
       userid:Joi.string().required(),
       projectid:Joi.string().required(),
       name:Joi.string().required(),
-      priority:Joi.number().required(),
+      priority:Joi.number(),
       messageid:Joi.string(),
       status:Joi.string()
    })
@@ -14,10 +14,18 @@ const validateTask = task => {
 }
 
 const taskSchema = new mongoose.Schema({
-   userid:{type:mongoose.Schema.Types.ObjectId, ref:"user", required:true},
-   projectid:{type:mongoose.Schema.Types.ObjectId, ref:"project", required:true},
+   userid:{
+      type:mongoose.Schema.Types.ObjectId, 
+      ref:"user", 
+      required:true
+   },
+   projectid:{
+      type:mongoose.Schema.Types.ObjectId, 
+      ref:"project", 
+      required:true
+   },
    name:{type:String, required:true},
-   priority:{type:Number, required:true},
+   priority:{type:Number,default:5},
    messageid:[{type:mongoose.Schema.Types.ObjectId, ref:"message"}],
    status:{type:String}
 })

@@ -34,12 +34,14 @@ exports.updateProjectDetails = async (req, res) => {
          const project = await Project.findByIdAndUpdate(id,{
             $push: {
                taskid:newid
-            }
+            },
+            // {workspaceid:req.body.workspaceid}
          })
          res.send(project);
       }
       else
       {
+         console.log(req.body)
          const project = await Project.findByIdAndUpdate(id, req.body)
          res.send(project);
       }
@@ -53,8 +55,13 @@ exports.updateProjectDetails = async (req, res) => {
 exports.updateWorkspaceDetails = async(req, res) => {
    const id = req.params.id;
    try{
-      console.log(res.body)
-      const workspace = await Workspace.findByIdAndUpdate(id, req.body, {new:true})
+      console.log(req.body)
+      const workspace = await Workspace.findByIdAndUpdate(id, {
+         $push: {
+            projectid:req.body.projectid
+         }
+      })
+      const project = await Project.findByIdAndUpdate(req.body.projectid,{"workspaceid":req.params.id})
       res.send(workspace)
    }
    catch(e){
@@ -75,6 +82,7 @@ exports.updateTask = async(req,res) => {
          res.send(task);
       }
       else{
+         console.log(req.body)
          const task = await Task.findByIdAndUpdate(id, req.body)
          res.send(task)
       }

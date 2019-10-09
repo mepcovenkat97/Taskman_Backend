@@ -17,7 +17,6 @@ passport.use(
         // payload contain user id
         try {
           const user = await User.findById(payload.sub)
-          console.log(user)
           if (!user) {
             // 401 user not found
             return done(null, false);

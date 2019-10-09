@@ -54,27 +54,52 @@ exports.addUser = async (req, res) => {
 
 exports.addProject = async (req,res) => {
    try{
+    console.log(req.body)
       const { error } = validateProject(req.body);
       if(error){
          return res.status(400).json({ message: error.details[0].message });
       }
+
+      const isAvail = await Project.findOne({name:req.body.title})
+      console.log(isAvail)
+      if(isAvail)
+        {
+        return res.status(409).json({message:"Conflict"})
+      }
+      else{
       const {
          title,
-         workspace,
+         workspaceid,
+         startdate,
+         enddate,
          teamid,
          taskid,
       } = req.body;
 
       const newProject = new Project({
          title,
-         workspace,
+         workspaceid,
+         startdate,
+         enddate,
          teamid,
          taskid
       });
-      await newProject.save();
+      const ans = await newProject.save();
+      console.log(ans._id);
+      const reans = await Workspace.findByIdAndUpdate(ans.workspaceid,{
+        $push:{
+          "projectid":ans._id
+        }
+      })
+      const reeans = await Team.findByIdAndUpdate(ans.teamid,{
+        $push:{
+          "projectid":ans._id
+        }
+      })
       res.status(200).json({
          title:newProject.title,
       });
+      }
    }catch(e){
       res.status(500).json({ message: "Server error." });
     console.log("ERROR:", e);
@@ -83,25 +108,37 @@ exports.addProject = async (req,res) => {
 
 exports.addWorkspace = async (req, res) => {
    try{
+      console.log(req.body)
       const { error } = validateWorkspace(req.body);
       if(error){
+        console.log(req.body)
          return res.status(400).json({ message: error.details[0].message });
       }
+      console.log("Inside Add Workspace API")
+      console.log(req.body)
+      const isAvail = await Workspace.findOne({name:req.body.name})
+      if(isAvail)
+      {
+        return res.status(409).json({message:"Conflict"})
+      }
+      else
+      {
       const {
          name,
          projectid,
-         teamid
+         //teamid
       }=req.body;
 
       const newWorkspace = new Workspace({
          name,
          projectid,
-         teamid
+         //teamid
       });
       await newWorkspace.save();
       res.status(200).json({
          name:newWorkspace.name
       })
+      }
    }catch(e){
       res.status(500).json({ message: "Server error." });
     console.log("ERROR:", e);
@@ -115,6 +152,7 @@ exports.addTask = async (req, res) => {
       if(error){
          return res.status(400).json({message:error.details[0].message})
       }
+
       const {
          userid,
          projectid,
@@ -158,8 +196,10 @@ exports.addTeam = async (req, res)=> {
 
 exports.addMessage = async (req, res) => {
    try{
+
       const { error } = validateMessage(req.body);
       if(error){
+
          return res.status(400).json({message:error.details[0].message})
       }
       const { content, userid, taskid, projectid } = req.body

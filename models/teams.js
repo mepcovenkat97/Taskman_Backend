@@ -4,7 +4,7 @@ const Joi = require("@hapi/joi")
 const validateTeam = team => {
    const schema = Joi.object().keys({
       name:Joi.string().required(),
-      userid:Joi.string().required(),
+      userid:Joi.string(),
       projectid:Joi.string().required()
    })
    return schema.validate(team)
