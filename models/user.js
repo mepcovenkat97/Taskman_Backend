@@ -8,10 +8,10 @@ const validateUser = user => {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      type:Joi.string().required(),
-      teamid: Joi.string(),
-      taskid: Joi.string(),
-      projectid: Joi.string(),
+      type:Joi.string(),
+      // teamid: Joi.string(),
+      // taskid: Joi.string(),
+      // projectid: Joi.string(),
    });
    return schema.validate(user);
 };
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
    type:{ type:String},
    password:{type:String},
    teamid:{type:mongoose.Schema.Types.ObjectId, ref:"team"},
-   taskid:{type:mongoose.Schema.Types.ObjectId, ref:"task"},
+   taskid:[{type:mongoose.Schema.Types.ObjectId, ref:"task"}],
    projectid:{type:mongoose.Schema.Types.ObjectId, ref:"project"}
 })
 

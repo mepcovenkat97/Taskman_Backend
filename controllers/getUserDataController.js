@@ -8,16 +8,26 @@ const { Message } = require("../models/messages");
 exports.getUser = async (req,res) => {
    try{
       const user = await User.find()
-         //.populate('projectid')
-         // .populate('teamid')
-         // .populate('taskid')
+         .populate(["projectid","teamid"])
       if(!user){
          return res.status(404).send({ message: "User not found" });
       }
-      console.log(user)
+      //console.log(user)
       res.send(user)
    }
    catch(e){
+      console.log(e);
+      res.status(500).send("Internal Server Error");
+   }
+}
+
+exports.getUserById = async (req,res) => {
+   try{
+      const user = await User.findById(req.params.id);
+      res.send(user);
+   }
+   catch(e)
+   {
       console.log(e);
       res.status(500).send("Internal Server Error");
    }
@@ -41,12 +51,36 @@ exports.getProjectById = async (req,res) => {
 exports.getProject = async (req,res) => {
    try{
       const project = await Project.find({})
-         .populate(["taskid", "workspaceid", "teamid"]);
+         //.populate(["taskid", "workspaceid", "teamid","userid"]);
+     // console.log(project);
+      //const task = await Task.findById(project.taskid)
       if(!project)
       {
          return res.status(404).send({ message: "Project not found" });
       }
-      res.send(project);
+      project.map(async (data,index)=>{
+         if(data.startdate <= new Date() && data.enddate > new Date())
+         {
+            const res = await Project.findByIdAndUpdate(data._id,{"status":"on Going"});
+            // console.log("Test \n");
+            // console.log(res);
+         }
+         else if(data.enddate < new Date() && data.startdate < new Date())
+         {
+            const res = await Project.findByIdAndUpdate(data._id,{"status":"incomplete"});
+            // console.log("Test \n");
+            // console.log(res);
+         }
+         else if( data.startdate > new Date() && data.enddate > new Date())
+         {
+            const res = await Project.findByIdAndUpdate(data._id,{"status":"not Started"});
+            // console.log("Test \n");
+            // console.log(res);
+         }
+      })
+      const project2 = await Project.find({})
+         .populate(["taskid", "workspaceid", "teamid","userid"]);
+      res.status(200).send(project2);
    }
    catch(e){
       console.log(e);
@@ -103,7 +137,7 @@ exports.getTaskById = async (req,res) => {
 exports.getTask = async (req,res) => {
    try{
       const task = await Task.find({})
-         .populate('projectid')
+         .populate(["projectid","userid","messageid"])
       if(!task)
       {
          return res.status(404).send({ message: "Task not found" });
@@ -133,7 +167,8 @@ exports.getTeamById = async (req, res) => {
 
 exports.getTeam = async (req,res) => {
    try{
-      const team = await Team.find();
+      const team = await Team.find()
+         .populate(["projectid","userid"]);
       if(!team){
          return res.status(404).send({ message: "Team not found" });
       }
@@ -148,6 +183,22 @@ exports.getTeam = async (req,res) => {
 exports.getMessage = async(req,res) => {
    try{
       const message = await Message.find();
+      if(!message)
+      {
+         return res.status(404).send({ message: "Message Not Found"})
+      }
+      res.send(message)
+   }
+   catch(e){
+      console.log(e)
+      res.status(500).send("Internal Server Error");
+   }
+}
+
+exports.getMessageById = async(req,res) => {
+   try{
+      const message = await Message.findById(req.params.id)
+            .populate("userid");
       if(!message)
       {
          return res.status(404).send({ message: "Message Not Found"})

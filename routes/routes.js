@@ -4,6 +4,7 @@ const userLoginController = require("../controllers/userLoginController");
 const addUserDataController = require("../controllers/addUserDataController");
 const updateUserDataController = require("../controllers/updateUserDataController")
 const getUserDataController = require("../controllers/getUserDataController");
+const deleteUserDataController = require("../controllers/deleteUserDataController");
 
 const express = require("express");
 const router = express.Router();
@@ -33,6 +34,13 @@ router
    .put(
       updateUserDataController.updateUser
    )
+   .get(
+      getUserDataController.getUserById
+   )
+   // .get(
+   //    passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
+   //    getUserDataController.getUSerById
+   // )
 router
    .route("/project")
    .post(
@@ -65,6 +73,10 @@ router
       passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
       getUserDataController.getWorkspace
    )
+   .delete(
+      passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
+      deleteUserDataController.deleteWorkspaceById
+   )
 
 router
    .route("/workspace/:id")
@@ -78,6 +90,7 @@ router
    )
 
 
+
 router
    .route("/task")
    .post(
@@ -87,6 +100,17 @@ router
    .get(
       passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
       getUserDataController.getTask
+   )
+
+router
+   .route("/getOneTask")
+   .put(
+      passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
+      updateUserDataController.updateTask
+   )
+   .get(
+      passport.authenticate(passportConfig.STRATEGY_JWT,{session:false}),
+      getUserDataController.getTaskById
    )
 
 router
@@ -129,5 +153,11 @@ router
    )
    .get(
       getUserDataController.getMessage
+   )
+
+router
+   .route("/message/:id")
+   .get(
+      getUserDataController.getMessageById
    )
 module.exports = router;

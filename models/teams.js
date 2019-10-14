@@ -2,9 +2,10 @@ const mongoose = require("mongoose")
 const Joi = require("@hapi/joi")
 
 const validateTeam = team => {
+   console.log(team);
    const schema = Joi.object().keys({
       name:Joi.string().required(),
-      userid:Joi.string(),
+      userid:Joi.string().required(),
       projectid:Joi.string().required()
    })
    return schema.validate(team)

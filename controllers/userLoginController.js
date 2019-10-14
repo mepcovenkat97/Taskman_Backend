@@ -1,4 +1,5 @@
 const { generateToken } = require("../helpers/jwt");
+const {Task} = require("../models/tasks");
 
 exports.userLogin = async (req, res) => {
    try{
@@ -6,6 +7,8 @@ exports.userLogin = async (req, res) => {
       console.log(user);
       const token = generateToken(user);
       console.log(token)
+     // const taskdetails = await Task.findById(user.taskid);
+
       res.status(200).json({
          token,
          user:{
@@ -20,6 +23,6 @@ exports.userLogin = async (req, res) => {
       });
    }
    catch(e){
-      res.status(500).send({message:"Internal Server Error"});
+      res.status(500).send({message:e.message});
    }
 }
