@@ -1,6 +1,6 @@
 {
    "db":{
-      "connection-string":"mongodb://localhost:27017/Taskman"
+      "connection-string":"mongodb://localhost:27017/ttman"
    },
    "JWT":{
       "OPTIONAL_SECRET_KEY":"12345678"

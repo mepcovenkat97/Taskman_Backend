@@ -118,7 +118,7 @@ exports.addProject = async (req,res) => {
       {
         const reeans = await Team.findByIdAndUpdate(ans.userid,{"projectid":ans._id})
       }
-      res.status(200).json({
+      res.status(201).json({
          title:newProject.title,
       });
       }
@@ -187,14 +187,36 @@ exports.addTask = async (req, res) => {
          projectid,
          name,
          priority,
-         messageid
+         messageid,
+         startdate,
+         enddate,
       } = req.body;
+      const startDate = new Date(req.body.startdate);
+      const endDate = new Date(req.body.enddate);
+      const currDate = new Date(Date.now());
+      let status = "";
+      if(startDate <= currDate && endDate > currDate)
+      {
+        status = "ongoing";
+      }
+      else if(endDate < currDate && startDate < currDate)
+      {
+        status  = "incomplete";
+      }
+      else if(startDate > currDate && endDate > currDate)
+      {
+        status = "not started";
+      }
+
       const newTask = new Task({
          userid,
          projectid,
          name,
          priority,
-         messageid
+         messageid,
+         startdate,
+         enddate,
+         status
       })
       const task = await newTask.save();
       const proj = await Project.findByIdAndUpdate(task.projectid,{

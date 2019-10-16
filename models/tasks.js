@@ -6,9 +6,9 @@ const validateTask = task => {
       userid:Joi.string().required(),
       projectid:Joi.string().required(),
       name:Joi.string().required(),
+      startdate:Joi.date().required(),
+      enddate:Joi.date().required(),
       priority:Joi.number(),
-      // startdate:Joi.date(),
-      // enddate:Joi.date(),
    })
    return schema.validate(task);
 }
@@ -25,11 +25,11 @@ const taskSchema = new mongoose.Schema({
       required:true
    },
    name:{type:String, required:true},
+   startdate:{type:Date,default:Date.now},
+   enddate:{type:Date},
    priority:{type:Number},
-   // startdate:{type:Date},
-   // enddate:{type:Date},
    messageid:[{type:mongoose.Schema.Types.ObjectId, ref:"message"}],
-   status:{type:String,default:"not Started"}
+   status:{type:String}
 })
 
 const Task = mongoose.model("task", taskSchema);
