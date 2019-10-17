@@ -45,7 +45,15 @@ exports.updateProjectDetails = async (req, res) => {
          const project = await Project.findByIdAndUpdate(id, req.body)
          if(req.body.teamid)
          {
-            const team = await Team.findByIdAndUpdate(req.body.teamid,{"projectid":id})
+            const team = await Team.findByIdAndUpdate(req.body.teamid,{
+               $push:{
+                  "projectid":req.params.id
+               }
+            })
+         }
+         else if(req.body.userid)
+         {
+            const user = await User.findByIdAndUpdate(req.body.userid,{"projectid":req.params.id})
          }
          //const rteam = await Team.findByIdAnd(req.body.teamid,{$pullAll:{"projectid":req.params.is}})
          res.send(project);

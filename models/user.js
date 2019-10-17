@@ -9,7 +9,7 @@ const validateUser = user => {
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       type:Joi.string(),
-      // teamid: Joi.string(),
+      teamid: Joi.string().optional(),
       // taskid: Joi.string(),
       // projectid: Joi.string(),
    });

@@ -16,11 +16,20 @@ exports.addUser = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
+    const isAvail = await User.findOne({email:req.body.email})
+      console.log(isAvail)
+      if(isAvail)
+        {
+        return res.status(409).json({message:"Conflict"})
+      }
+      else{
+
     const {
       email,
       password,
       name,
-      type
+      type,
+      teamid
     } = req.body;
 
     // create user with role
@@ -29,10 +38,15 @@ exports.addUser = async (req, res) => {
        email, 
        password ,
       name,
+      teamid,
       type
     });
     await newUser.save();
-
+    const team = await Team.findByIdAndUpdate(req.body.teamid,{
+      $push:{
+        userid:newUser._id
+      }
+    })
     // genrate token
     const token = jwt.generateToken(newUser);
 
@@ -45,6 +59,7 @@ exports.addUser = async (req, res) => {
         type: newUser.type
       }
     });
+  }
   } catch (e) {
     res.status(500).json({ message: "Server error." });
     console.log("ERROR:", e);
