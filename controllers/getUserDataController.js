@@ -117,7 +117,10 @@ exports.getTaskById = async (req,res) => {
       {
          return res.status(404).send({ message: "Task not found" });
       }
-      res.send(task)
+      console.log("Task by ID");
+      console.log(task);
+      const task2 = await Task.findById(req.params.id)
+      res.send(task2)
    }
    catch(e){
       console.log(e);
@@ -136,19 +139,19 @@ exports.getTask = async (req,res) => {
       task.map(async (data,index)=>{
          if(task.status != completed)
          {
-         if(new Date(data.startdate) <= new Date(Date.now()) && new Date(data.enddate) > new Date(Date.now()))
-         {
-            const res = await Task.findByIdAndUpdate(data._id,{"status":"on going"});
+            if(new Date(data.startdate) <= new Date(Date.now()) && new Date(data.enddate) > new Date(Date.now()))
+            {
+               const res = await Task.findByIdAndUpdate(data._id,{"status":"on going"});
+            }
+            else if(new Date(data.enddate) < new Date(Date.now()) && new Date(data.startdate) < new Date(Date.now()))
+            {
+               const res = await Task.findByIdAndUpdate(data._id,{"status":"incomplete"});
+            }
+            else if( new Date(data.startdate) > new Date(Date.now()) && new Date(data.enddate) > new Date(Date.now()))
+            {
+               const res = await Task.findByIdAndUpdate(data._id,{"status":"not started"});
+            }
          }
-         else if(new Date(data.enddate) < new Date(Date.now()) && new Date(data.startdate) < new Date(Date.now()))
-         {
-            const res = await Task.findByIdAndUpdate(data._id,{"status":"incomplete"});
-         }
-         else if( new Date(data.startdate) > new Date(Date.now()) && new Date(data.enddate) > new Date(Date.now()))
-         {
-            const res = await Task.findByIdAndUpdate(data._id,{"status":"not started"});
-         }
-      }
       })
       const task2 = await Task.find()
          .populate(["projectid","userid","messageid"])
