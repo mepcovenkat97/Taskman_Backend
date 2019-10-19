@@ -13,9 +13,12 @@ const validateMessage = message =>{
 
 const messageSchema = new mongoose.Schema({
    content:{type:String, required:true},
+   //createdAt:{type:Date, default:new Date()},
    userid:{type:mongoose.Schema.Types.ObjectId, ref:"user"},
    taskid:{type:mongoose.Schema.Types.ObjectId, ref:"task"},
   // projectid:{type:mongoose.Schema.Types.ObjectId, ref:"project"}
+},{
+    timestamps: true
 })
 
 const Message = mongoose.model("message", messageSchema);

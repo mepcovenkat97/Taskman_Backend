@@ -195,7 +195,8 @@ exports.getTeam = async (req,res) => {
 
 exports.getMessage = async(req,res) => {
    try{
-      const message = await Message.find();
+      const message = await Message.find()
+            .populate("userid");
       if(!message)
       {
          return res.status(404).send({ message: "Message Not Found"})
