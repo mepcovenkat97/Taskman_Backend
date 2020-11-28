@@ -19,7 +19,7 @@
   "dependencies": {
     "@hapi/joi": "^16.1.5",
     "audit": "0.0.6",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
     "cors": "^2.8.5",
@@ -27,7 +27,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "mongoose": "^5.7.8",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.3",
